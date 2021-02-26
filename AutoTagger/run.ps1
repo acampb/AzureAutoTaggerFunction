@@ -8,6 +8,12 @@ Write-Output $eventGridEvent.data.claims
 $name = $eventGridEvent.data.claims.name
 Write-Output "NAME: $name"
 
+$appid = $eventGridEvent.data.claims.appid
+Write-Output "APPID: $appid"
+
+$upn = $eventGridEvent.data.claims.'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/upn'
+Write-Output "UPN: $upn"
+
 $time = Get-Date -Format o
 Write-Output "TIMESTAMP: $time"
 
