@@ -3,13 +3,17 @@ param($eventGridEvent, $TriggerMetadata)
 # Make sure to pass hashtables to Out-String so they're logged correctly
 $eventGridEvent | Out-String | Write-Host
 
-Write-Output $eventGridEvent.data.claims | Format-List
+# uncomment for claims detail for debugging
+# Write-Output $eventGridEvent.data.claims | Format-List
 
 $name = $eventGridEvent.data.claims.name
 Write-Output "NAME: $name"
 
 $appid = $eventGridEvent.data.claims.appid
 Write-Output "APPID: $appid"
+
+$objid = $eventGridEvent.data.claims.'http://schemas.microsoft.com/identity/claims/objectidentifier'
+Write-Output "OBJECTID: $objid"
 
 $email = $eventGridEvent.data.claims.'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'
 Write-Output "EMAIL: $email"
