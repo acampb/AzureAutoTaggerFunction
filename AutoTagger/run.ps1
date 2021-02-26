@@ -4,7 +4,7 @@ param($eventGridEvent, $TriggerMetadata)
 $eventGridEvent | Out-String | Write-Host
 
 # uncomment for claims detail for debugging
-# Write-Output $eventGridEvent.data.claims | Format-List
+Write-Output $eventGridEvent.data.claims | Format-List
 
 $name = $eventGridEvent.data.claims.name
 Write-Output "NAME: $name"
