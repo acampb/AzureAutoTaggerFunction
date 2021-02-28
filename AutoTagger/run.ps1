@@ -28,18 +28,32 @@ Write-Output "URI: $uri"
 try {
     $resource = Get-AzResource -ResourceId $uri -ErrorAction Stop
 
-    If (($resource) -and ($resource.ResourceId -notlike '*Microsoft.Resources/deployments*') -and ($name.length -gt 1)) {
-        Write-Output 'Tagging resource'
+    If (($resource) -and
+        ($resource.ResourceId -notlike '*Microsoft.Resources/deployments*')) {
+
+        Write-Output 'Attempting to tag resource'
+
+        If ($email) {
+            $lastModifiedBy = $email
+        } else {
+            $lastModifiedBy = (Get-AzADServicePrincipal -ApplicationId $appid).DisplayName
+        }
+
         $tags = @{
-            "LastModifiedBy"        = $name
+            "LastModifiedBy"        = $lastModifiedBy
             "LastModifiedTimeStamp" = $time
         }
-        Update-AzTag -ResourceId $uri -Tag $tags -Operation Merge
+        try {
+            Update-AzTag -ResourceId $uri -Tag $tags -Operation Merge
+        }
+        catch {
+            Write-Output "Encountered error writing tag, may be a resource that does not support tags."
+        }
     }
     else {
-        Write-Output 'Tags do not appear to be supported on this resource, or name is empty'
+        Write-Output 'Excluded resource type'
     }
 }
 catch {
-    Write-Output "Not a resource we can tag"
+    Write-Output "Not able query the resource Uri. This could be due to a permissions problem (identity needs reader); or not a resource we can query"
 }
