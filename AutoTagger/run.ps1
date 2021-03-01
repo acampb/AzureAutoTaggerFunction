@@ -36,7 +36,7 @@ try {
         If ($email) {
             $lastModifiedBy = $email
         } else {
-            $lastModifiedBy = (Get-AzADServicePrincipal -ApplicationId $appid).DisplayName
+            $lastModifiedBy = $appid
         }
 
         $tags = @{
