@@ -37,7 +37,7 @@ try {
         }
         
         # Check if resource was already tagged so we know if this is the creation of the resource
-        $alreadyTagged = Get-AzResource -TagName 'LastModifiedBy' -Name $resource.Name -ResourceGroupName $resource.ResourceGroupName
+        $alreadyTagged = Get-AzResource -TagName 'Created TimeStamp' -Name $resource.Name -ResourceGroupName $resource.ResourceGroupName
         if ($alreadyTagged) {
             $tags = @{
                 "LastModifiedBy"        = $lastModifiedBy
