@@ -35,11 +35,23 @@ try {
         } else {
             $lastModifiedBy = $appid
         }
-
-        $tags = @{
-            "LastModifiedBy"        = $lastModifiedBy
-            "LastModifiedTimeStamp" = $time
+        
+        # Check if resource was already tagged so we know if this is the creation of the resource
+        $alreadyTagged = Get-AzResource -TagName 'LastModifiedBy' -Name $resource.Name -ResourceGroupName $resource.ResourceGroupName
+        if ($alreadyTagged) {
+            $tags = @{
+                "LastModifiedBy"        = $lastModifiedBy
+                "LastModifiedTimeStamp" = $time
+            }
+        }else {
+            $tags = @{
+                "LastModifiedBy"        = $lastModifiedBy
+                "LastModifiedTimeStamp" = $time
+                "Created By"            = $lastModifiedBy
+                "Created TimeStamp"     = $time
+            }
         }
+        
         try {
             Update-AzTag -ResourceId $uri -Tag $tags -Operation Merge
         }
