@@ -3,11 +3,9 @@
   "managedDependency": {
     "Enabled": true
   },
+  "functionTimeout": "00:10:00",
   "extensionBundle": {
     "id": "Microsoft.Azure.Functions.ExtensionBundle",
     "version": "[1.*, 2.0.0)"
-  },
-  {
-    "functionTimeout": "00:10:00"
   }
 }
